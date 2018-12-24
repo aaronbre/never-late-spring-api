@@ -21,6 +21,7 @@ class VerificationController {
 
     @GetMapping("/products")
     fun getProducts(): String{
+        verificationService.getProducts()
         return ""
     }
 }
