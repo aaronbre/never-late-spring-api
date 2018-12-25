@@ -30,8 +30,10 @@ class AndroidPublisherConfig{
 
     @Bean
     fun googleCredentials(httpTransport: HttpTransport, jsonFactory: JsonFactory): GoogleCredential {
-        val resource = resourceLoader.getResource("classpath:privateKey.json")
-        val credentials = GoogleCredential.fromStream(resource.inputStream)
+        //for dev
+//        val resource = resourceLoader.getResource("classpath:privateKey.json")
+        val inputStream = System.getenv("GOOGLE_AUTH_JSON").byteInputStream()
+        val credentials = GoogleCredential.fromStream(inputStream)
         return credentials.createScoped(Collections.singleton(AndroidPublisherScopes.ANDROIDPUBLISHER))
     }
 
