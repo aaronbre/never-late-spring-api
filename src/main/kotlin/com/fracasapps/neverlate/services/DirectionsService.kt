@@ -28,7 +28,7 @@ class DirectionsService {
         val response = ArrayList<Distance>()
         destinations.chunked(MAX_MATRIX_SIZE).forEach{
             val matrix = restTemplate.getForObject(createHereMatrixUrl(origin, it), HereMatrixResponse::class.java) ?: return response
-            matrix.response.matrixEntry.mapTo(response, { Distance(it.summary.distance, it.summary.travelTime) })
+            matrix.response.matrixEntry.mapTo(response) { Distance(it.summary.distance, it.summary.travelTime) }
         }
         return response
     }

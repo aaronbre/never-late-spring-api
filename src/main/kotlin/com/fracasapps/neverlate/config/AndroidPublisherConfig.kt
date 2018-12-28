@@ -7,16 +7,12 @@ import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.androidpublisher.AndroidPublisher
 import com.google.api.services.androidpublisher.AndroidPublisherScopes
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.io.ResourceLoader
 import java.util.*
 
 @Configuration
 class AndroidPublisherConfig{
-    @Autowired
-    lateinit var resourceLoader: ResourceLoader
 
     @Bean
     fun httpTransport(): HttpTransport {

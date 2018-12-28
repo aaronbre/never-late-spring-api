@@ -1,9 +1,11 @@
 package com.fracasapps.neverlate.controllers
 
+import com.fracasapps.neverlate.APP_PACKAGE
 import com.fracasapps.neverlate.models.Distance
 import com.fracasapps.neverlate.models.EventDetails
 import com.fracasapps.neverlate.models.Version
 import com.fracasapps.neverlate.services.DirectionsService
+import com.fracasapps.neverlate.services.VerificationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -13,6 +15,8 @@ class DirectionsController {
 
     @Autowired
     private lateinit var directionsService: DirectionsService
+    @Autowired
+    private lateinit var verificationService: VerificationService
 
     @GetMapping("/")
     fun homeMessage(): String {
@@ -26,10 +30,13 @@ class DirectionsController {
 
     @PostMapping("/direction-matrix")
     fun directionMatrix(@RequestParam("origin") origin: String,
+                        @RequestParam("token") token: String,
+                        @RequestParam("sku") sku: String,
                         @RequestBody destinations: List<EventDetails>): List<Distance> {
-        return directionsService.queryHereMatrix(origin, destinations)
-        //TODO add code to check for subscription validation and if none throw following exception
-        //throw ForbiddenException()
+        if(verificationService.verifyPurchase(token, sku, APP_PACKAGE)){
+            return directionsService.queryHereMatrix(origin, destinations)
+        }
+        else throw ForbiddenException()
     }
 
     @PostMapping("/directions")
@@ -40,8 +47,13 @@ class DirectionsController {
 
     @PostMapping("/public-transit")
     fun herePublicTransport(@RequestParam("origin") origin: String,
+                            @RequestParam("token") token: String,
+                            @RequestParam("sku") sku: String,
                             @RequestBody destinations: List<EventDetails>): List<Distance> {
-        return directionsService.getPublicTransportDirections(origin, destinations)
+        if(verificationService.verifyPurchase(token, sku, APP_PACKAGE)) {
+            return directionsService.getPublicTransportDirections(origin, destinations)
+        }
+        else throw ForbiddenException()
     }
 
 

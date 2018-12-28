@@ -40,7 +40,6 @@ class VerificationService {
 
     fun getProducts(): String {
         val products = androidPublisher.inappproducts().list("com.aaronbrecher.neverlate").execute()
-        purchasesRepository.save(PurchaseData(token = "1kdahdu2", paymentState = 2, expiryTime = 42, startTime = 24, autoResumeTime = 52))
         return products.toPrettyString()
     }
 

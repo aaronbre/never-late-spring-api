@@ -26,3 +26,6 @@ const val HERE_DIRECTIONS_ORIGIN_QUERY_NAME = "waypoint0"
 const val HERE_DIRECTIONS_DESTINATION_QUERY_NAME = "waypoint1"
 const val HERE_DIRECTIONS_DEPARTURE_QUERY_NAME = "departure"
 const val HERE_DIRECTIONS_ARRIVAL_QUERY_NAME = "arrival"
+
+//
+const val APP_PACKAGE = "com.aaronbrecher.neverlate"
