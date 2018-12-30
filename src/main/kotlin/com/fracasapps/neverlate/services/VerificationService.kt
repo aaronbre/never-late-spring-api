@@ -1,6 +1,7 @@
 package com.fracasapps.neverlate.services
 
 import com.fracasapps.neverlate.models.PurchaseData
+import com.fracasapps.neverlate.models.VerificationDetails
 import com.fracasapps.neverlate.repositories.PurchasesRepository
 import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.androidpublisher.AndroidPublisher
@@ -31,6 +32,22 @@ class VerificationService {
         } catch (ex: GoogleJsonResponseException) {
             false
         }
+    }
+
+    fun verifyPurchaseList(verificationDetailList: List<VerificationDetails>) : Boolean{
+        verificationDetailList.forEach{
+            if(databaseHasValidToken(it.token)) return true
+            try{
+                val purchaseInfo = androidPublisher.Purchases().subscriptions().get(it.packageName, it.sku, it.token).execute()
+                if(purchaseInfo.expiryTimeMillis > System.currentTimeMillis() && purchaseInfo.cancelReason == null){
+                    addPurchaseToDb(it.token, purchaseInfo)
+                    return true
+                }
+            }catch (ex: GoogleJsonResponseException){
+                return@forEach
+            }
+        }
+        return false
     }
 
     private fun databaseHasValidToken(token: String): Boolean {

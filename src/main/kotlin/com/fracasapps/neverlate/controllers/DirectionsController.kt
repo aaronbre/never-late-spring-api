@@ -1,8 +1,7 @@
 package com.fracasapps.neverlate.controllers
 
-import com.fracasapps.neverlate.APP_PACKAGE
+import com.fracasapps.neverlate.models.DirectionsRequestBody
 import com.fracasapps.neverlate.models.Distance
-import com.fracasapps.neverlate.models.EventDetails
 import com.fracasapps.neverlate.models.Version
 import com.fracasapps.neverlate.services.DirectionsService
 import com.fracasapps.neverlate.services.VerificationService
@@ -30,28 +29,27 @@ class DirectionsController {
 
     @PostMapping("/direction-matrix")
     fun directionMatrix(@RequestParam("origin") origin: String,
-                        @RequestParam("token") token: String,
-                        @RequestParam("sku") sku: String,
-                        @RequestBody destinations: List<EventDetails>): List<Distance> {
-        if(verificationService.verifyPurchase(token, sku, APP_PACKAGE)){
-            return directionsService.queryHereMatrix(origin, destinations)
+                        @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
+        if(verificationService.verifyPurchaseList(requestBody.purchases)){
+            return directionsService.queryHereMatrix(origin, requestBody.destinations)
         }
         else throw ForbiddenException()
     }
 
     @PostMapping("/directions")
     fun directions(@RequestParam("origin") origin: String,
-                   @RequestBody destination: EventDetails): Distance {
-        return directionsService.queryDirections(origin, destination, false)
+                   @RequestBody requestBody: DirectionsRequestBody): Distance {
+        if(verificationService.verifyPurchaseList(requestBody.purchases)){
+            return directionsService.queryDirections(origin, requestBody.destinations.first(), false)
+        }
+        else throw ForbiddenException()
     }
 
     @PostMapping("/public-transit")
     fun herePublicTransport(@RequestParam("origin") origin: String,
-                            @RequestParam("token") token: String,
-                            @RequestParam("sku") sku: String,
-                            @RequestBody destinations: List<EventDetails>): List<Distance> {
-        if(verificationService.verifyPurchase(token, sku, APP_PACKAGE)) {
-            return directionsService.getPublicTransportDirections(origin, destinations)
+                            @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
+        if(verificationService.verifyPurchaseList(requestBody.purchases)) {
+            return directionsService.getPublicTransportDirections(origin, requestBody.destinations)
         }
         else throw ForbiddenException()
     }
