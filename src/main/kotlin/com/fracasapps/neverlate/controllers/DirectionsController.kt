@@ -33,7 +33,7 @@ class DirectionsController {
     @PostMapping("/direction-matrix")
     fun directionMatrix(@RequestParam("origin") origin: String,
                         @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
-        logger.warn(requestBody.toString())
+        System.err.println(requestBody)
         if(verificationService.verifyPurchaseList(requestBody.purchases)){
             return directionsService.queryHereMatrix(origin, requestBody.destinations)
         }

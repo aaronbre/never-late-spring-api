@@ -42,8 +42,7 @@ class VerificationService {
             if(databaseHasValidToken(it.token)) return true
             try{
                 val purchaseInfo = androidPublisher.Purchases().subscriptions().get(it.packageName, it.sku, it.token).execute()
-                logger.warn(purchaseInfo.toString())
-                print(purchaseInfo.toPrettyString())
+                System.err.println(purchaseInfo)
                 if(purchaseInfo.expiryTimeMillis < System.currentTimeMillis() && purchaseInfo.cancelReason == null){
                     addPurchaseToDb(it.token, purchaseInfo)
                     return true
