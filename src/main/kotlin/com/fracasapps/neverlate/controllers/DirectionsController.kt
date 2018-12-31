@@ -5,6 +5,7 @@ import com.fracasapps.neverlate.models.Distance
 import com.fracasapps.neverlate.models.Version
 import com.fracasapps.neverlate.services.DirectionsService
 import com.fracasapps.neverlate.services.VerificationService
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -16,6 +17,8 @@ class DirectionsController {
     private lateinit var directionsService: DirectionsService
     @Autowired
     private lateinit var verificationService: VerificationService
+
+    private var logger = LoggerFactory.getLogger(DirectionsController::class.java)
 
     @GetMapping("/")
     fun homeMessage(): String {
@@ -30,7 +33,7 @@ class DirectionsController {
     @PostMapping("/direction-matrix")
     fun directionMatrix(@RequestParam("origin") origin: String,
                         @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
-        print(requestBody)
+        logger.warn(requestBody.toString())
         if(verificationService.verifyPurchaseList(requestBody.purchases)){
             return directionsService.queryHereMatrix(origin, requestBody.destinations)
         }
