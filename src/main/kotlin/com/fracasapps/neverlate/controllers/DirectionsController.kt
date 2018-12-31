@@ -18,8 +18,6 @@ class DirectionsController {
     @Autowired
     private lateinit var verificationService: VerificationService
 
-    private var logger = LoggerFactory.getLogger(DirectionsController::class.java)
-
     @GetMapping("/")
     fun homeMessage(): String {
         return "This is the home of neverlate app api"
@@ -33,11 +31,11 @@ class DirectionsController {
     @PostMapping("/direction-matrix")
     fun directionMatrix(@RequestParam("origin") origin: String,
                         @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
-        System.err.println(requestBody)
-        if(verificationService.verifyPurchaseList(requestBody.purchases)){
+        System.err.println(requestBody.toString())
+//        if(verificationService.verifyPurchaseList(requestBody.purchases)){
             return directionsService.queryHereMatrix(origin, requestBody.destinations)
-        }
-        else throw ForbiddenException()
+//        }
+//        else throw ForbiddenException()
     }
 
     @PostMapping("/directions")
