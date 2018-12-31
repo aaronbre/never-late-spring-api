@@ -36,10 +36,10 @@ class VerificationService {
 
     fun verifyPurchaseList(verificationDetailList: List<VerificationDetails>) : Boolean{
         verificationDetailList.forEach{
-            print(it.toString())
             if(databaseHasValidToken(it.token)) return true
             try{
                 val purchaseInfo = androidPublisher.Purchases().subscriptions().get(it.packageName, it.sku, it.token).execute()
+                print(purchaseInfo.toPrettyString())
                 if(purchaseInfo.expiryTimeMillis < System.currentTimeMillis() && purchaseInfo.cancelReason == null){
                     addPurchaseToDb(it.token, purchaseInfo)
                     return true
