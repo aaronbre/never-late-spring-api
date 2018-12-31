@@ -46,8 +46,8 @@ class DirectionsService {
 
     private fun addMatrixDestinations(destinations: List<EventDetails>, builder: UriComponentsBuilder) {
         (0 until destinations.size).forEach{
-            val coords = destinations[it].latitude.toString() + "," + destinations[it].longitude
-            builder.queryParam("destination" + it, coords)
+            val coords = "${destinations[it].latitude},${destinations[it].longitude}"
+            builder.queryParam("destination$it", coords)
         }
     }
 
@@ -60,7 +60,7 @@ class DirectionsService {
     }
 
     fun queryDirections(origin: String, destination: EventDetails, publicTransport: Boolean = false): Distance {
-        val destinationCoords = destination.latitude.toString() + "," + destination.longitude
+        val destinationCoords = "${destination.latitude},${destination.longitude}"
         val url = if (publicTransport) createHerePublicTransportBaseUrl(origin, destinationCoords, destination.time)
         else createDrivingBaseUrl(origin, destinationCoords)
 
