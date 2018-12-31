@@ -26,7 +26,7 @@ class VerificationService {
         var valid = false
         return try {
             val purchaseInfo = androidPublisher.Purchases().subscriptions().get(packageName, productId, purchaseToken).execute()
-            if(purchaseInfo.expiryTimeMillis < System.currentTimeMillis()){
+            if(purchaseInfo.expiryTimeMillis > System.currentTimeMillis()){
                 addPurchaseToDb(purchaseToken, purchaseInfo)
                 valid = true
             }
@@ -43,7 +43,7 @@ class VerificationService {
             try{
                 val purchaseInfo = androidPublisher.Purchases().subscriptions().get(it.packageName, it.sku, it.token).execute()
                 System.err.println(purchaseInfo)
-                if(purchaseInfo.expiryTimeMillis < System.currentTimeMillis() && purchaseInfo.cancelReason == null){
+                if(purchaseInfo.expiryTimeMillis > System.currentTimeMillis() && purchaseInfo.cancelReason == null){
                     addPurchaseToDb(it.token, purchaseInfo)
                     return true
                 }
