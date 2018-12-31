@@ -35,6 +35,7 @@ class VerificationService {
     }
 
     fun verifyPurchaseList(verificationDetailList: List<VerificationDetails>) : Boolean{
+        print(verificationDetailList)
         verificationDetailList.forEach{
             if(databaseHasValidToken(it.token)) return true
             try{
