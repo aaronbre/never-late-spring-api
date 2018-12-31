@@ -41,6 +41,7 @@ class DirectionsController {
     @PostMapping("/directions")
     fun directions(@RequestParam("origin") origin: String,
                    @RequestBody requestBody: DirectionsRequestBody): Distance {
+        System.err.println(requestBody.toString())
         if(verificationService.verifyPurchaseList(requestBody.purchases)){
             return directionsService.queryDirections(origin, requestBody.locationDetails.first(), false)
         }
@@ -50,6 +51,7 @@ class DirectionsController {
     @PostMapping("/public-transit")
     fun herePublicTransport(@RequestParam("origin") origin: String,
                             @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
+        System.err.println(requestBody.toString())
         if(verificationService.verifyPurchaseList(requestBody.purchases)) {
             return directionsService.getPublicTransportDirections(origin, requestBody.locationDetails)
         }
