@@ -12,4 +12,4 @@ data class PurchaseData(@Id
                         var paymentState: Int = -1,
                         var expiryTime: Long = -1,
                         var startTime: Long = -1,
-                        var email: String = "")
+                        var email: String? = "")
