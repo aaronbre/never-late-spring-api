@@ -69,7 +69,6 @@ class VerificationService {
                 expiryTime = purchaseInfo.expiryTimeMillis,
                 paymentState = purchaseInfo.paymentState,
                 startTime = purchaseInfo.startTimeMillis,
-                autoResumeTime = purchaseInfo.autoResumeTimeMillis,
                 email = purchaseInfo.emailAddress))
     }
 }
