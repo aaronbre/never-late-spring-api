@@ -33,7 +33,7 @@ class DirectionsController {
                         @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
         System.err.println(requestBody.toString())
 //        if(verificationService.verifyPurchaseList(requestBody.purchases)){
-            return directionsService.queryHereMatrix(origin, requestBody.destinations)
+            return directionsService.queryHereMatrix(origin, requestBody.locationDetails)
 //        }
 //        else throw ForbiddenException()
     }
@@ -42,7 +42,7 @@ class DirectionsController {
     fun directions(@RequestParam("origin") origin: String,
                    @RequestBody requestBody: DirectionsRequestBody): Distance {
         if(verificationService.verifyPurchaseList(requestBody.purchases)){
-            return directionsService.queryDirections(origin, requestBody.destinations.first(), false)
+            return directionsService.queryDirections(origin, requestBody.locationDetails.first(), false)
         }
         else throw ForbiddenException()
     }
@@ -51,7 +51,7 @@ class DirectionsController {
     fun herePublicTransport(@RequestParam("origin") origin: String,
                             @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
         if(verificationService.verifyPurchaseList(requestBody.purchases)) {
-            return directionsService.getPublicTransportDirections(origin, requestBody.destinations)
+            return directionsService.getPublicTransportDirections(origin, requestBody.locationDetails)
         }
         else throw ForbiddenException()
     }
