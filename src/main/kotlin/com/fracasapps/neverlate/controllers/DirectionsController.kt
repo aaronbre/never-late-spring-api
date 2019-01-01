@@ -32,30 +32,32 @@ class DirectionsController {
     fun directionMatrix(@RequestParam("origin") origin: String,
                         @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
         System.err.println(requestBody.toString())
-        if(verificationService.verifyPurchaseList(requestBody.purchases)){
+        //TODO uncomment to add subscription only
+//        if(verificationService.verifyPurchaseList(requestBody.purchases)){
             return directionsService.queryHereMatrix(origin, requestBody.locationDetails)
-        }
-        else throw ForbiddenException()
+//        }
+//        else throw ForbiddenException()
     }
 
     @PostMapping("/directions")
     fun directions(@RequestParam("origin") origin: String,
                    @RequestBody requestBody: DirectionsRequestBody): Distance {
+        //TODO uncomment to add subscription only
         System.err.println(requestBody.toString())
-        if(verificationService.verifyPurchaseList(requestBody.purchases)){
+//        if(verificationService.verifyPurchaseList(requestBody.purchases)){
             return directionsService.queryDirections(origin, requestBody.locationDetails.first(), false)
-        }
-        else throw ForbiddenException()
+//        }
+//        else throw ForbiddenException()
     }
 
     @PostMapping("/public-transit")
     fun herePublicTransport(@RequestParam("origin") origin: String,
                             @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
         System.err.println(requestBody.toString())
-        if(verificationService.verifyPurchaseList(requestBody.purchases)) {
+//        if(verificationService.verifyPurchaseList(requestBody.purchases)) {
             return directionsService.getPublicTransportDirections(origin, requestBody.locationDetails)
-        }
-        else throw ForbiddenException()
+//        }
+//        else throw ForbiddenException()
     }
 
 
