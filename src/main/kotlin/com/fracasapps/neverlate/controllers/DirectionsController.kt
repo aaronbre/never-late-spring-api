@@ -28,11 +28,6 @@ class DirectionsController {
         return Version(version = 33, needsUpdate = false)
     }
 
-    @GetMapping("/privacy-policy")
-    fun getPrivacy(){
-
-    }
-
     @PostMapping("/direction-matrix")
     fun directionMatrix(@RequestParam("origin") origin: String,
                         @RequestBody requestBody: DirectionsRequestBody): List<Distance> {
